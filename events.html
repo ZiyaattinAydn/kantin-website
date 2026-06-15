@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Kantin. Alsancak ve Atakent yaklaşan etkinlikleri.">
+  <meta name="theme-color" content="#0047BB">
+  <title>Etkinlikler — kantin.</title>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css?v=6-final-2">
+  <script src="assets/js/main.js?v=6-final-2" defer></script>
+  <script type="module" src="assets/js/events-public.js?v=6-final-2"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">İçeriğe geç</a>
+  <header class="site-header" data-header>
+    <div class="container nav-wrap">
+      <a class="brand" href="index.html" aria-label="Kantin ana sayfa">kantin<span>.</span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menüyü aç" data-nav-toggle>
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="site-nav" id="site-nav" aria-label="Ana navigasyon" data-nav>
+        <a href="index.html">Ana sayfa</a>
+        <a class="active" href="events.html">Etkinlikler</a>
+        <a href="menu.html">Menü</a>
+        <a href="index.html#subeler">Şubeler</a>
+        <a class="nav-cta" href="menu.html">Şubeni seç</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero page-hero-events dotted-paper">
+      <div class="container page-hero-grid">
+        <div class="reveal">
+          <p class="eyebrow">Her hafta etkinlik varmış gibi davranmıyoruz</p>
+          <h1>Etkinlikler<span>.</span></h1>
+          <p>
+            Takvim yalnızca gerçekten planlanan bir etkinlik yayınlandığında dolar.
+            Tarih, saat ve şube bilgisi yönetici panelinden eklenir.
+          </p>
+        </div>
+        <div class="page-hero-mark reveal reveal-delay-1" aria-hidden="true">
+          <span>LIVE—WHEN LIVE</span>
+          <svg viewBox="0 0 320 270">
+            <rect x="44" y="52" width="232" height="178" rx="18"/>
+            <path d="M44 100h232M96 34v36M224 34v36M91 136h30M145 136h30M199 136h30M91 178h30M145 178h30M199 178h30"/>
+          </svg>
+        </div>
+      </div>
+    </section>
+
+    <section class="section events-page">
+      <div class="container">
+        <div class="filter-bar reveal" aria-label="Etkinlikleri şubeye göre filtrele">
+          <button class="filter-button active" type="button" data-event-filter="all" aria-pressed="true">Tümü</button>
+          <button class="filter-button" type="button" data-event-filter="alsancak" aria-pressed="false">Alsancak</button>
+          <button class="filter-button" type="button" data-event-filter="atakent" aria-pressed="false">Atakent</button>
+        </div>
+
+        <div class="event-list dynamic-events-list" data-events-list aria-live="polite">
+          <article class="events-zero-state">
+            <div class="events-zero-mark">00</div>
+            <div>
+              <p class="eyebrow">Şu an yayınlanmış etkinlik yok</p>
+              <h2>Takvim sakin.<br>Bu da gayet normal.</h2>
+              <p>Yeni bir etkinlik eklendiğinde tarih, saat ve şube bilgisi burada görünecek.</p>
+            </div>
+            <a class="button button-primary" href="https://www.instagram.com/kantinizmir/" target="_blank" rel="noopener">Instagram’ı takip et ↗</a>
+          </article>
+        </div>
+
+        <p class="empty-state" hidden data-event-empty>Bu şube için yayınlanmış etkinlik bulunmuyor.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div>
+        <a class="brand footer-brand" href="index.html">kantin<span>.</span></a>
+        <p>savor the sip,<br>share the bite.</p>
+      </div>
+      <div class="footer-links">
+        <p class="footer-label">Keşfet</p>
+        <a href="events.html">Etkinlikler</a>
+        <a href="menu.html">Şube menüleri</a>
+        <a href="index.html#subeler">Konumlar</a>
+      </div>
+      <div class="footer-links">
+        <p class="footer-label">Sosyal</p>
+        <a href="https://www.instagram.com/kantinizmir/" target="_blank" rel="noopener">Instagram ↗</a>
+        <a href="mailto:hello@kantin.pub">hello@kantin.pub</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© <span data-year></span> kantin.</span>
+      <span>İzmir’de iyi akşamlar için.</span>
+    </div>
+  </footer>
+</body>
+</html>

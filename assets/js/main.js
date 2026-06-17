@@ -189,4 +189,126 @@
 
     menuSections.forEach((section) => sectionObserver.observe(section));
   }
+
+  // Merch Drop: yalnızca fotoğraf hover'ında önizleme; buton veya fotoğraf tıklamasıyla kalıcı aç/kapat.
+  document.querySelectorAll('[data-merch-toggle]').forEach((card) => {
+    const trigger = card.querySelector('[data-merch-trigger]');
+    const photoToggle = card.querySelector('[data-merch-photo-toggle]');
+    if (!trigger) return;
+
+    const updateState = () => {
+      const open = card.classList.contains('is-open');
+      trigger.setAttribute('aria-expanded', String(open));
+
+      if (photoToggle) {
+        photoToggle.setAttribute('aria-pressed', String(open));
+        photoToggle.setAttribute(
+          'aria-label',
+          open ? 'Tişörtün ön yüzünü göster' : 'Tişörtün arka tasarımını göster'
+        );
+      }
+
+      trigger.innerHTML = open
+        ? 'Ön yüze dön <span aria-hidden="true">↺</span>'
+        : 'Tasarımı aç <span aria-hidden="true">↗</span>';
+    };
+
+    const toggleCard = () => {
+      card.classList.toggle('is-open');
+      updateState();
+    };
+
+    trigger.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleCard();
+    });
+
+    if (photoToggle) {
+      photoToggle.addEventListener('click', (event) => {
+        if (event.target.closest('[data-merch-trigger]')) return;
+        event.preventDefault();
+        event.stopPropagation();
+        toggleCard();
+
+        // Dokunmatik cihazlarda kalıcı focus/hover görüntüsünü temizle.
+        if (window.matchMedia('(hover: none), (pointer: coarse)').matches) {
+          photoToggle.blur();
+        }
+      });
+
+      photoToggle.addEventListener('keydown', (event) => {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        toggleCard();
+      });
+    }
+
+    card.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape' || !card.classList.contains('is-open')) return;
+      card.classList.remove('is-open');
+      updateState();
+      trigger.focus();
+    });
+
+    updateState();
+  });
+
+
+  // Tüm beyaz noktalı arka planlara merch alanındaki animasyonlu karikatürleri ekler.
+  const doodleTargets = document.querySelectorAll('.dotted-paper');
+
+  const createAmbientDoodleStage = () => {
+    const stage = document.createElement('div');
+    stage.className = 'merch-doodle-stage ambient-doodle-stage';
+    stage.setAttribute('aria-hidden', 'true');
+    stage.innerHTML = `
+      <img class="merch-doodle merch-doodle-table ambient-doodle-table" src="assets/img/merch/doodles/table-friends.png" alt="">
+      <img class="merch-doodle merch-doodle-look ambient-doodle-look" src="assets/img/merch/doodles/looking-up.png" alt="">
+      <img class="merch-doodle merch-doodle-bar ambient-doodle-bar" src="assets/img/merch/doodles/bar-friends.png" alt="">
+      <img class="merch-doodle merch-doodle-jump ambient-doodle-jump" src="assets/img/merch/doodles/jumping.png" alt="">
+      <img class="merch-doodle merch-doodle-cats ambient-doodle-cats" src="assets/img/merch/doodles/cats-table.png" alt="">
+      <img class="merch-doodle merch-doodle-share ambient-doodle-share" src="assets/img/merch/doodles/sharing-drink.png" alt="">
+      <img class="merch-doodle merch-doodle-highfive ambient-doodle-highfive" src="assets/img/merch/doodles/high-five.png" alt="">
+      <img class="merch-doodle merch-doodle-hug ambient-doodle-hug" src="assets/img/merch/doodles/hugging.png" alt="">
+      <img class="merch-doodle merch-doodle-walk ambient-doodle-walk" src="assets/img/merch/doodles/walking.png" alt="">
+    `;
+    return stage;
+  };
+
+  doodleTargets.forEach((section) => {
+    if (section.querySelector('.ambient-doodle-stage')) return;
+    section.insertBefore(createAmbientDoodleStage(), section.firstChild);
+  });
+
+  // Merch arka planındaki karakterlere masaüstünde hafif imleç paralaksı ekle.
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll('[data-merch-parallax]').forEach((shell) => {
+      const stage = shell.querySelector('.merch-doodle-stage');
+      if (!stage) return;
+
+      let animationFrame = 0;
+
+      const resetParallax = () => {
+        stage.style.setProperty('--parallax-x', '0px');
+        stage.style.setProperty('--parallax-y', '0px');
+      };
+
+      shell.addEventListener('pointermove', (event) => {
+        if (!window.matchMedia('(pointer: fine)').matches || window.innerWidth < 900) return;
+        const rect = shell.getBoundingClientRect();
+        const normalizedX = (event.clientX - rect.left) / rect.width - 0.5;
+        const normalizedY = (event.clientY - rect.top) / rect.height - 0.5;
+
+        cancelAnimationFrame(animationFrame);
+        animationFrame = requestAnimationFrame(() => {
+          stage.style.setProperty('--parallax-x', `${(-normalizedX * 12).toFixed(1)}px`);
+          stage.style.setProperty('--parallax-y', `${(-normalizedY * 9).toFixed(1)}px`);
+        });
+      }, { passive: true });
+
+      shell.addEventListener('pointerleave', resetParallax);
+    });
+  }
+
 })();
